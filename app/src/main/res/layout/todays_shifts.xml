@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
+    <LinearLayout
+        android:id="@+id/YourShiftDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your shift is highlighted in "
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/mmrtextb"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/YourShiftSetter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yellow"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/mmrtextb"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/YourColleaguesShiftDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/YourShiftDescription">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your colleagues' shifts are in  "
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/mmrtextb"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/ColleagueShiftSetter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Blue"
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/mmrtextb"
+            android:textSize="18sp" />
+    </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/graphView"
+            android:layout_below="@id/YourColleaguesShiftDescription">
+            <com.framgia.library.calendardayview.CalendarDayView
+                android:id="@+id/calendar_daily_view"
+                android:background="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/graphView">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TodaysShift"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/shift_for_the_day"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/mmrtextb"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tShiftSetter"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:text=""
+                android:textColor="@color/colorAccent"
+                android:fontFamily="@font/mmrtextb"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/BreakEstimate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TodaysShift"
+            android:text="@string/your_break_is_estimated_to_be"
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/mmrtextb"
+            android:textSize="18sp"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/First15"
+            android:layout_below="@id/BreakEstimate"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/fifteen_min"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/mmrtextb"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tB1Setter"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="@font/mmrtextb"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Meal"
+            android:layout_below="@id/First15"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/meal"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/mmrtextb"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tMealSetter"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="@font/mmrtextb"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Final15"
+            android:layout_below="@id/Meal"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/fifteen_min"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/mmrtextb"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tB3Setter"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="@font/mmrtextb"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="60dp">
+
+        <TextView
+            android:id="@+id/header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/mmrtextb"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textSize="27sp" />
+        <LinearLayout
+            android:id="@+id/signup"
+            android:layout_below="@id/header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="0dp">
+                <TextView
+                    android:id="@+id/signupText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mmrtextb"
+                    android:text="Sign Up"
+                    android:textColor="@android:color/white"
+                    android:textSize="27sp" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_walmart_spark" />
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/signup">
+
+            <EditText
+                android:id="@+id/emailEditText"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="16sp"
+                android:fontFamily="@font/mmrtextb"
+                android:background="@drawable/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"/>
+
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:paddingLeft="16sp"
+                android:fontFamily="@font/mmrtextb"
+                android:background="@drawable/password"
+                android:layout_below="@id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"/>
+            <Button
+                android:id="@+id/signupButton"
+                android:text="Sign up"
+                android:textAllCaps="false"
+                android:fontFamily="@font/mmrtextb"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:background="@drawable/login_background"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginVertical="8dp"
+                android:layout_below="@id/passwordEditText" />
+            <TextView
+                android:id="@+id/already_have_an_account"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/signupButton"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="@font/mmrtextb"
+                android:text="Already have an account? Tap here!"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

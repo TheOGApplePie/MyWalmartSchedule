@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">My Walmart Schedule</string>
+    <string name="enter_badge_number">Enter your badge number.</string>
+    <string name="this_can_be_found">(This can be found near your name on the paper schedule)</string>
+    <string name="badge_number">Badge Number</string>
+    <string name="your_shifts_are_queried">Your shifts are fetched by your badge number inside the database. Please note that no other information is being collected about you when you use this app. If you have any questions and/or concerns feel free to read through the Privacy Policy.</string>
+    <string name="shift_for_the_day">Shift for the day: </string>
+    <string name="something_went_wrong">Something went wrong. Please try to login again. If this is a common issue, please let developer know.</string>
+    <string name="my_shifts_fragment_insight">You can select a date on the calendar to view your
+        shift for that day.</string>
+    <string name="not_applicable">Not Applicable</string>
+    <string name="your_break_is_estimated_to_be">Your breaks are estimated to be:</string>
+    <string name="fifteen_min">15 Min:</string>
+    <string name="meal">Meal:</string>
+    <string name="title_activity_all_my_shifts">AllMyShifts</string>
+</resources>
