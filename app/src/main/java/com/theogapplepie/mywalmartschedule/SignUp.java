@@ -1,26 +1,20 @@
 package com.theogapplepie.mywalmartschedule;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-public class Signup extends AppCompatActivity implements View.OnClickListener {
+public class SignUp extends AppCompatActivity implements View.OnClickListener {
     EditText emailEditText, passwordEditText;
     private FirebaseAuth mAuth;
 
@@ -29,7 +23,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_layout);
 
-        findViewById(R.id.already_have_an_account).setOnClickListener(this);
+        findViewById(R.id.login).setOnClickListener(this);
         findViewById(R.id.signupButton).setOnClickListener(this);
 
         emailEditText = findViewById(R.id.emailEditText);
@@ -48,7 +42,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
             return;
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            emailEditText.setError("Please enter a valid email address. Ex. example@gmail.com");
+            emailEditText.setError("Please enter a valid email address. Ex. example@mail.com");
             emailEditText.requestFocus();
             return;
         }
@@ -68,7 +62,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
             if(task.isSuccessful()){
                 Toast.makeText(getApplicationContext(), "You've successfully been registered! Please verify your email.", Toast.LENGTH_SHORT).show();
                 mAuth.getCurrentUser().sendEmailVerification();
-                Intent intent = new Intent(Signup.this, Login.class);
+                Intent intent = new Intent(SignUp.this, LogIn.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }else{
@@ -83,8 +77,8 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
             case R.id.signupButton:
                 registerUser();
                 break;
-            case R.id.already_have_an_account:
-                Intent intent = new Intent(this, Login.class);
+            case R.id.login:
+                Intent intent = new Intent(this, LogIn.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();

@@ -21,12 +21,16 @@ return file.download({destination: tempFileDest})
 .then(() => {            
     
     return new Promise(function (resolve, reject) {
-        var schedule = {};
-        var csvStream = csv.fromPath(tempFileDest, {'headers': true});
+        var schedule = {}
+        var csvStream = csv.parseFile(tempFileDest, {'headers': true});
     csvStream.on('data', function(data){
         csvStream.pause();
+        var store = data.Store;
+        var job = data.Job;
         var employee = data.Employee;
         schedule[employee] = [];
+        schedule[employee].push(store);
+        schedule[employee].push(job);
         var satS   = new Date (data.SatS);
         schedule[employee].push(satS);
         var satF   = new Date (data.SatF);
@@ -67,12 +71,17 @@ return file.download({destination: tempFileDest})
     }).then((schedule) =>{
         const employees = Object.keys(schedule);
         const shifts = Object.keys(schedule).map(function(key) {
-             return schedule[key];
-         });
+            return schedule[key];
+        });
         const promises = [];
+        var storeNumber;
+        var jobTitle;
+        
         for (var i = 0; i < employees.length; i++){
-            for (var j = 0; j < shifts[i].length; j += 2){
-                const p = db.collection(employees[i]).add({
+            for (var j = 2; j < shifts[i].length; j += 2){
+                storeNumber = shifts[i][0];
+                jobTitle = shifts[i][1];
+                const p = db.collection(storeNumber).doc(jobTitle).collection(employees[i]).add({
                     begin: shifts[i][j],
                     end: shifts[i][j+1]
                 });                    
@@ -80,7 +89,8 @@ return file.download({destination: tempFileDest})
             }
         }
         return Promise.all(promises);
-    }).then(() => {
+    })
+    .then(() => {
         console.log("File deleted from Cloud Storage.")
         return file.delete();
     }).catch(err =>{console.log(err)});

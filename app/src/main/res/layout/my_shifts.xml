@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="20dp">
+    android:layout_margin="20dp">
 
     <TextView
         android:id="@+id/description"
@@ -15,18 +15,20 @@
         android:fontFamily="@font/mmrtextb"
         android:textSize="18sp" />
 
-    <CalendarView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@id/description"
-        android:id="@+id/calendar">
+<com.theogapplepie.mywalmartschedule.CustomCalendarView
+    android:layout_width="match_parent"
+    android:layout_height="370dp"
+    android:layout_below="@id/description"
+    android:id="@+id/customCalendar"
+    android:scaleX="1"
+    android:scaleY="1">
+</com.theogapplepie.mywalmartschedule.CustomCalendarView>
 
-    </CalendarView>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/calendar">
+        android:layout_below="@id/customCalendar">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,6 +51,7 @@
                 android:layout_gravity="start"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
+                android:text="@string/no_date_selected"
                 android:textColor="@color/colorAccent"
                 android:fontFamily="@font/mmrtextb"
                 android:textSize="18sp" />

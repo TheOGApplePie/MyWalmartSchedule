@@ -3,74 +3,50 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp">
-    <LinearLayout
-        android:id="@+id/YourShiftDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your shift is highlighted in "
-            android:textColor="@color/colorPrimary"
-            android:fontFamily="@font/mmrtextb"
-            android:textSize="18sp" />
+    android:layout_margin="20dp">
 
         <TextView
-            android:id="@+id/YourShiftSetter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Yellow"
-            android:textColor="@color/colorAccent"
-            android:fontFamily="@font/mmrtextb"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/YourColleaguesShiftDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/YourShiftDescription">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your colleagues' shifts are in  "
-            android:textColor="@color/colorAccent"
-            android:fontFamily="@font/mmrtextb"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/ColleagueShiftSetter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Blue"
-            android:textColor="@color/colorPrimary"
-            android:fontFamily="@font/mmrtextb"
-            android:textSize="18sp" />
-    </LinearLayout>
-        <ScrollView
+            android:id="@+id/YourShiftDescription"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:id="@+id/graphView"
-            android:layout_below="@id/YourColleaguesShiftDescription">
-            <com.framgia.library.calendardayview.CalendarDayView
-                android:id="@+id/calendar_daily_view"
-                android:background="#ffffff"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:text="@string/your_shift_is_highlighted"
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/mmrtextb"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/YourColleaguesShiftDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:layout_below="@id/YourShiftDescription"
+            android:text="@string/your_colleagues_shifts"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/mmrtextb"
+            android:textSize="18sp" />
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/YourColleaguesShiftDescription"
+        android:id="@+id/calendar_daily_view">
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <com.theogapplepie.mywalmartschedule.CustomDayView
+                android:id="@+id/ccdv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </ScrollView>
+    </HorizontalScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/graphView">
+        android:layout_below="@id/calendar_daily_view">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,6 +54,7 @@
             android:layout_centerHorizontal="true">
 
             <TextView
+                android:id="@+id/tShiftTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -99,7 +76,7 @@
                 android:textSize="18sp" />
         </LinearLayout>
         <TextView
-            android:id="@+id/BreakEstimate"
+            android:id="@+id/tBreakEstimate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/TodaysShift"
@@ -113,9 +90,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/First15"
-            android:layout_below="@id/BreakEstimate"
+            android:layout_below="@id/tBreakEstimate"
             android:layout_centerHorizontal="true">
             <TextView
+                android:id="@+id/tB1Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -141,6 +119,7 @@
             android:layout_below="@id/First15"
             android:layout_centerHorizontal="true">
             <TextView
+                android:id="@+id/tMealTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -166,6 +145,7 @@
             android:layout_below="@id/Meal"
             android:layout_centerHorizontal="true">
             <TextView
+                android:id="@+id/tB3Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

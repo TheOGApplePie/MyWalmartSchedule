@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/nav_logout"
-        android:title="Logout">
 
-    </item>
-    <item
-        android:id="@+id/nav_privacy"
-        android:title="Privacy Policy">
-
+    <item android:id="@+id/nav_edit_user_data"
+          android:title="@string/enter_user_details">
     </item>
     <item
         android:id="@+id/nav_feedback"
-        android:title="Feedback">
+        android:title="@string/feedback">
     </item>
+    <item
+        android:id="@+id/nav_privacy"
+        android:title="@string/privacy_policy">
+    </item>
+    <item
+    android:id="@+id/nav_logout"
+    android:title="@string/log_out">
+    </item>
+
 </menu>

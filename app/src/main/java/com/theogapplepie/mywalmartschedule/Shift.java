@@ -3,8 +3,9 @@ package com.theogapplepie.mywalmartschedule;
 
 import java.util.Date;
 
-public class Shift {
+public class Shift implements Comparable <Shift>{
     private Date begin, end;
+    private String employee;
 
     public Shift(){}
 
@@ -20,5 +21,20 @@ public class Shift {
 
     public Date getEnd() {
         return end;
+    }
+
+    public void setEmployee(String emp){employee = emp;}
+
+    public String getEmployee() {
+        return employee;
+    }
+
+    @Override
+    public int compareTo(Shift shiftToCompare) {
+
+        long compareShift = shiftToCompare.getBegin().getTime();
+        // For Ascending order
+        long compareValue = this.begin.getTime() - compareShift;
+        return (int)(compareValue);
     }
 }

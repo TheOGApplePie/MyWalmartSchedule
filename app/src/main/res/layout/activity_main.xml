@@ -11,21 +11,46 @@
     android:layout_height="wrap_content"
     android:layout_above="@id/navigation"
     android:layout_alignParentTop="true">
+
     <FrameLayout
         android:id="@+id/FrameContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
     </FrameLayout>
+
 </ScrollView>
 
-    <android.support.design.widget.BottomNavigationView
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+    <TextView
+        android:id="@+id/simple_message"
+        android:layout_below="@id/progress_circular"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/mmrtextb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fetching your shifts. Please wait."/>
+    <TextView
+        android:id="@+id/zero_shifts"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:textAlignment="center"
+        android:fontFamily="@font/mmrtextb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="It looks like no one's scheduled today! Is it a holiday?"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/button_navigation">
-    </android.support.design.widget.BottomNavigationView>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </RelativeLayout>

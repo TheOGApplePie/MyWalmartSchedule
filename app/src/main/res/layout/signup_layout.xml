@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
@@ -30,14 +31,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mmrtextb"
-                    android:text="Sign Up"
+                    android:text="@string/sign_up"
                     android:textColor="@android:color/white"
                     android:textSize="27sp" />
 
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/ic_walmart_spark" />
+                    android:contentDescription="@string/walmart_logo"
+                    app:srcCompat="@drawable/ic_walmart_spark" />
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -47,29 +49,33 @@
 
             <EditText
                 android:id="@+id/emailEditText"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:paddingLeft="16sp"
+                android:paddingStart="16sp"
+                android:paddingEnd="16sp"
                 android:fontFamily="@font/mmrtextb"
                 android:background="@drawable/login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
 
             <EditText
                 android:id="@+id/passwordEditText"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
-                android:paddingLeft="16sp"
+                android:paddingStart="16sp"
+                android:paddingEnd="16sp"
                 android:fontFamily="@font/mmrtextb"
                 android:background="@drawable/password"
                 android:layout_below="@id/emailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
             <Button
                 android:id="@+id/signupButton"
-                android:text="Sign up"
+                android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:fontFamily="@font/mmrtextb"
                 android:textColor="@android:color/white"
@@ -77,18 +83,20 @@
                 android:background="@drawable/login_background"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_below="@id/passwordEditText" />
-            <TextView
-                android:id="@+id/already_have_an_account"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="8dp"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/login"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/signupButton"
-                android:textColor="@color/colorAccent"
+                android:textColor="@android:color/white"
+                android:background="@color/colorAccent"
                 android:fontFamily="@font/mmrtextb"
-                android:text="Already have an account? Tap here!"/>
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:text="@string/log_in_instead"/>
         </RelativeLayout>
 
     </RelativeLayout>

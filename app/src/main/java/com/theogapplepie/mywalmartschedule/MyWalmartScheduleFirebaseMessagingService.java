@@ -6,32 +6,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import androidx.core.app.NotificationCompat;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class MyWalmartScheduleFirebaseMessagingService extends FirebaseMessagingService {
-    FirebaseFirestore db;
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
 
     public MyWalmartScheduleFirebaseMessagingService() {
-
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         String channelId = "channel_id";
@@ -57,19 +47,14 @@ public class MyWalmartScheduleFirebaseMessagingService extends FirebaseMessaging
      */
     @Override
     public void onNewToken(String token) {
-        Log.d("TOKEN", "Refreshed token: " + token);
-
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        sendRegistrationToServer(token);
+        storeToken(token);
 
     }
-    public void sendRegistrationToServer(String token){
-        db = FirebaseFirestore.getInstance();
-        Map<String, Object> deviceToken = new HashMap<>();
-        deviceToken.put("token", token);
-        db.collection("tokens").add(deviceToken);
+    public void storeToken(String token){
+        SharedPreferenceManager.getInstance(getApplicationContext()).storeToken(token);
     }
 
 }

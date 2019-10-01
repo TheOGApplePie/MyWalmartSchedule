@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
@@ -27,15 +28,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/mmrtextb"
-            android:text="Login"
+            android:text="@string/log_in"
             android:textColor="@android:color/white"
             android:textSize="27sp" />
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:contentDescription="Walmart Logo"
-            android:src="@drawable/ic_walmart_spark" />
+            android:contentDescription="@string/walmart_logo"
+            app:srcCompat="@drawable/ic_walmart_spark" />
             </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -45,61 +46,80 @@
 
             <EditText
                 android:id="@+id/emailSignInEditText"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:maxLines="1"
                 android:inputType="textEmailAddress"
-                android:paddingHorizontal="16sp"
+                android:paddingStart="16sp"
+                android:paddingEnd="16sp"
                 android:fontFamily="@font/mmrtextb"
                 android:background="@drawable/login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_marginVertical="8dp"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
 
             <EditText
                 android:id="@+id/passwordSignInEditText"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:hint="Password"
-                android:paddingHorizontal="16sp"
+                android:hint="@string/password"
+                android:paddingStart="16sp"
+                android:paddingEnd="16sp"
                 android:fontFamily="@font/mmrtextb"
                 android:background="@drawable/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_below="@id/emailSignInEditText" />
 
             <Button
                 android:id="@+id/submitButton"
-                android:text="Login"
+                android:text="@string/log_in"
                 android:textAllCaps="false"
                 android:fontFamily="@font/mmrtextb"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 android:background="@drawable/login_background"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_below="@id/passwordSignInEditText" />
-            <TextView
-                android:id="@+id/dont_have_an_account"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="2dp"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/submitButton"
-                android:textColor="@color/colorAccent"
-                android:fontFamily="@font/mmrtextb"
-                android:text="Don't have an account? Tap here!"/>
-            <TextView
-                android:id="@+id/forgot_password"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_centerHorizontal="true">
+            <Button
+                android:id="@+id/signup"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/dont_have_an_account"
-                android:textColor="@color/colorAccent"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:background="@color/colorAccent"
                 android:fontFamily="@font/mmrtextb"
-                android:text="I forgot my password"/>
+                android:textAllCaps="false"
+                android:textSize="17sp"
+                android:layout_marginEnd="4dp"
+                android:text="@string/sign_up"/>
+
+            <Button
+                android:id="@+id/forgot_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:background="@color/colorAccent"
+                android:fontFamily="@font/mmrtextb"
+                android:textAllCaps="false"
+                android:textSize="17sp"
+                android:layout_marginStart="4dp"
+                android:text="@string/forgot_password"/>
+            </LinearLayout>
         </RelativeLayout>
 
     </RelativeLayout>

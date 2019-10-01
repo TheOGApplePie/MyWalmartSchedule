@@ -1,16 +1,55 @@
 <resources>
     <string name="app_name">My Walmart Schedule</string>
-    <string name="enter_badge_number">Enter your badge number.</string>
-    <string name="this_can_be_found">(This can be found near your name on the paper schedule)</string>
-    <string name="badge_number">Badge Number</string>
-    <string name="your_shifts_are_queried">Your shifts are fetched by your badge number inside the database. Please note that no other information is being collected about you when you use this app. If you have any questions and/or concerns feel free to read through the Privacy Policy.</string>
-    <string name="shift_for_the_day">Shift for the day: </string>
-    <string name="something_went_wrong">Something went wrong. Please try to login again. If this is a common issue, please let developer know.</string>
-    <string name="my_shifts_fragment_insight">You can select a date on the calendar to view your
-        shift for that day.</string>
-    <string name="not_applicable">Not Applicable</string>
-    <string name="your_break_is_estimated_to_be">Your breaks are estimated to be:</string>
+    <string name="continue_button">Continue</string>
+    <string name="current_date">Current Date</string>
+    <string name="email">Email</string>
+    <string name="enter_user_details">Edit Your User Details</string>
+    <string name="feedback">Feedback</string>
+    <string name="fetching_your_shifts">Fetching your shifts. Please wait.</string>
     <string name="fifteen_min">15 Min:</string>
+    <string name="first_name_and_last_initial">Legal first name and last name initial \n(Ex. John Smith = JohnS)</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="friday">F</string>
+    <string name="log_in">Log In</string>
+    <string name="log_in_instead">Already have account? Log in instead</string>
+    <string name="log_out">Log Out</string>
     <string name="meal">Meal:</string>
-    <string name="title_activity_all_my_shifts">AllMyShifts</string>
+    <string name="monday">M</string>
+    <string name="my_shifts_fragment_insight">You can select a date on the calendar with a <font color='red'> red</font> dot to view your shift for that day.</string>
+    <string name="no_date_selected">No date selected</string>
+    <string name="not_applicable">Not Applicable</string>
+    <string name="password">Password</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="saturday">S</string>
+    <string name="select_job">Select position</string>
+    <string name="select_store">Select store number</string>
+    <string name="send_email">Send Email</string>
+    <string name="shift_for_the_day">Shift for the day: </string>
+    <string name="sign_up">Sign Up</string>
+    <string name="something_went_wrong">Something went wrong. Please try to login again. If this is a common issue, please let developer know.</string>
+    <string name="specify_email">Please enter the email address associated with your account. We will send an email with further instructions to reset your password.</string>
+    <string name="sunday">S</string>
+    <string name="thursday">T</string>
+    <string name="title_activity_all_my_shifts">All My Shifts</string>
+    <string name="tuesday">T</string>
+    <string name="walmart_logo">Walmart Logo</string>
+    <string name="wednesday">W</string>
+    <string name="your_colleagues_shifts">Your colleagues\' shifts are highlighted in <font color='#0072CE'>Blue</font>.</string>
+    <string name="your_break_is_estimated_to_be">Your breaks are estimated to be:</string>
+    <string name="your_not_on_this_schedule">You\'re not in the schedule for this department and store. Maybe double-check how you entered your name and the store and department you selected?"</string>
+    <string name="your_shift_is_highlighted">Your shift is highlighted in <font color='#FFB81C'>Yellow</font>.</string>
+    <string name="your_store_department">Your store/department doesn\'t have schedules uploaded yet. Reach out to the developer so you can be supported!"</string>
+
+    <string-array name="jobs">
+        <item>Select Your Position</item>
+        <item>Cashier</item>
+        <item>Customer Service Associate</item>
+        <item>Customer Service Manager</item>
+        <item>Self Checkout Associate</item>
+    </string-array>
+    <string-array name="stores">
+        <item>Select Your Store</item>
+        <item>3654</item>
+    </string-array>
 </resources>

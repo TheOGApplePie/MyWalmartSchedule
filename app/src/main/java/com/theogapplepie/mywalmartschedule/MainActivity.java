@@ -2,22 +2,28 @@ package com.theogapplepie.mywalmartschedule;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -25,21 +31,30 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
-
+public class MainActivity extends AppCompatActivity{
 
     /**
      * Creating an instance of FirebaseAuth object in order to detect if user is authorized to use
      * the app
      */
     private FirebaseAuth mAuth;
-    private FirebaseUser mFirebaseUser;
     private FirebaseFirestore mFirestoreDatabase;
+    private FirebaseUser mFirebaseUser;
     private FirebaseFirestoreSettings mFirebaseFirestoreSettings;
+
+
+
     NumberFormat nFormat = new DecimalFormat("00");
     ArrayList<Shift> mShifts = new ArrayList<>();
+
+    ArrayList<Shift> mTodaysShifts = new ArrayList<>();
+
+    ProgressBar progressBar;
+    String currentUser, position, store;
+    TextView fetchingShift, zeroShifts;
+    BottomNavigationView buttonNav;
 
     /**
      * Creating an options menu to be displayed on the top right
@@ -63,75 +78,147 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
 
+
         if (mFirebaseUser == null) {
-            startActivity(new Intent(this, Login.class));
+            startActivity(new Intent(this, LogIn.class));
             finish();
         }
-        if(mFirebaseUser.getDisplayName() == null || mFirebaseUser.getDisplayName().isEmpty() ||
-                mFirebaseUser.getDisplayName().equals("")){
-            setBadgeNumber();
-        }
         mFirestoreDatabase = FirebaseFirestore.getInstance();
-        mFirebaseFirestoreSettings = new FirebaseFirestoreSettings.Builder()
-                .setTimestampsInSnapshotsEnabled(true).build();
+        mFirebaseFirestoreSettings = new FirebaseFirestoreSettings.Builder().build();
         mFirestoreDatabase.setFirestoreSettings(mFirebaseFirestoreSettings);
-        getShiftsFromFirestore();
+        zeroShifts = findViewById(R.id.zero_shifts);
+        zeroShifts.setVisibility(View.GONE);
 
+        String email = mFirebaseUser.getEmail();
+        DocumentReference documentReference = mFirestoreDatabase.collection("Users").document(email);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    try{
+                        currentUser = document.get("Name").toString();
+                        position = document.get("Job").toString();
+                        store = document.get("Store Number").toString();
+                        progressBar = findViewById(R.id.progress_circular);
+                        fetchingShift = findViewById(R.id.simple_message);
 
-        BottomNavigationView buttonNav = findViewById(R.id.navigation);
-        buttonNav.setOnNavigationItemSelectedListener(navListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.FrameContainer,
-                new TodaysScheduleFragment()).commit();
+                        buttonNav = findViewById(R.id.navigation);
+                        mTodaysShifts.clear();
+                        getAssociatesListFromFirestore(position, store);
+                        buttonNav.setOnNavigationItemSelectedListener(navListener);
+                    } catch (Exception e){
+                        setBadgeNumber();
+                        Toast.makeText(MainActivity.this, "It looks like we're missing some of your details", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    logOut();
+                }
+            }
+        });
     }
 
     public void setBadgeNumber() {
             startActivity(new Intent(this, UpdateUserName.class));
-            Toast.makeText(this, "Please provide us with your badge number", Toast.LENGTH_SHORT).show();
-            finish();
     }
 
-    public void getShiftsFromFirestore() {
-        String badgeNumber = mFirebaseUser.getDisplayName();
+    public void getAssociatesListFromFirestore(final String job, final String storeNumber) {
+        buttonNav.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        fetchingShift.setVisibility(View.VISIBLE);
         mShifts.clear();
         try {
-            mFirestoreDatabase.collection(badgeNumber).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                mFirestoreDatabase.collection(storeNumber).document(job).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            @SuppressWarnings("unchecked")
+                            List<String> listOfAssociates = (List<String>)documentSnapshot.get("Associates");
+                            if(listOfAssociates!= null && listOfAssociates.size() > 0){
+                                if(listOfAssociates.contains(position)){
+                            for (String i: listOfAssociates){
+                            getShiftsFromFirestore(job,storeNumber, i);}}
+                                else{
+                                    zeroShifts.setVisibility(View.VISIBLE);
+                                    zeroShifts.setText(R.string.your_not_on_this_schedule);
+                                    fetchingShift.setVisibility(View.GONE);
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                        }else{
+                                zeroShifts.setVisibility(View.VISIBLE);
+                                zeroShifts.setText(R.string.your_store_department);
+                                fetchingShift.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        }
+                        }
+                });
+        }catch(Exception e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            logOut();
+            }
+        }
+    public void getShiftsFromFirestore(String job, final String storeNumber, final String user) {
+        final Calendar today = Calendar.getInstance();
+        try {
+            mFirestoreDatabase.collection(storeNumber).document(job).collection(user).orderBy("begin", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot d : task.getResult()) {
-                            Shift shift = d.toObject(Shift.class);
-                            mShifts.add(shift);
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                            Shift shift = queryDocumentSnapshot.toObject(Shift.class);
+                            if(shift.getEnd().getTime() - shift.getBegin().getTime()>= 14400000){
+                                shift.setEmployee(user);
+                                if (user.equals(currentUser)){
+                                    mShifts.add(shift);
+                                }
+                                Calendar shiftCalendar = Calendar.getInstance();
+                                shiftCalendar.setTimeInMillis(shift.getBegin().getTime());
+                                if (shiftCalendar.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH) &&
+                                        shiftCalendar.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
+                                        shiftCalendar.get(Calendar.YEAR) == today.get(Calendar.YEAR)){
+                                    mTodaysShifts.add(shift);
+                                }
+                            }
                         }
+                        progressBar.setVisibility(View.GONE);
+                        fetchingShift.setVisibility(View.GONE);
+                        buttonNav.setVisibility(View.VISIBLE);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.FrameContainer,new TodaysScheduleFragment()).commit();
                     }
                 }
+
             });
-        } catch (Exception e) {
+        }catch(Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            logOut();
         }
     }
 
     public int[] getShiftForDay(int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-
-        int[] shiftData = new int[4];
-        shiftData[0] = 0;
-        shiftData[1] = 0;
-        shiftData[2] = 0;
-        shiftData[3] = 0;
+        Calendar startTimeCalendar = Calendar.getInstance();
+        Calendar endTimeCalendar = Calendar.getInstance();
+        int[] shiftTime = new int[4];
+        shiftTime[0] = 0;
+        shiftTime[1] = 0;
+        shiftTime[2] = 0;
+        shiftTime[3] = 0;
 
         for (int index = 0; index < mShifts.size(); index++) {
-            calendar.setTimeInMillis(mShifts.get(index).getBegin().getTime());
-            if (calendar.get(Calendar.DAY_OF_MONTH) == day && calendar.get(Calendar.MONTH) == month
-                    && calendar.get(Calendar.YEAR) == year) {
-                Calendar otherTempCal = Calendar.getInstance();
-                otherTempCal.setTimeInMillis(mShifts.get(index).getEnd().getTime());
-                shiftData[0] = calendar.get(Calendar.HOUR_OF_DAY);
-                shiftData[1] = calendar.get(Calendar.MINUTE);
-                shiftData[2] = otherTempCal.get(Calendar.HOUR_OF_DAY);
-                shiftData[3] = otherTempCal.get(Calendar.MINUTE);
+            startTimeCalendar.setTimeInMillis(mShifts.get(index).getBegin().getTime());
+            if (startTimeCalendar.get(Calendar.DAY_OF_MONTH) == day && startTimeCalendar.get(Calendar.MONTH) == month
+                    && startTimeCalendar.get(Calendar.YEAR) == year) {
+                endTimeCalendar.setTimeInMillis(mShifts.get(index).getEnd().getTime());
+                shiftTime[0] = startTimeCalendar.get(Calendar.HOUR_OF_DAY);
+                shiftTime[1] = startTimeCalendar.get(Calendar.MINUTE);
+                shiftTime[2] = endTimeCalendar.get(Calendar.HOUR_OF_DAY);
+                shiftTime[3] = endTimeCalendar.get(Calendar.MINUTE);
             }
         }
-        return shiftData;
+
+        return shiftTime;
     }
 
     public String[] getBreaks(int shiftStartHour, int shiftStartMin, int shiftEndHour, int shiftEndMin) {
@@ -153,11 +240,12 @@ public class MainActivity extends AppCompatActivity {
         endCalendar.set(Calendar.MINUTE, shiftEndMin);
         long shiftLength = endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis();
 
-        if (shiftLength > fourHrs) {
+        if (shiftLength >= fourHrs) {
             startCalendar.add(Calendar.HOUR_OF_DAY, 2);
             firstHalf = nFormat.format(startCalendar.get(Calendar.HOUR_OF_DAY)) + ":" +
                     nFormat.format(startCalendar.get(Calendar.MINUTE));
             startCalendar.add(Calendar.MINUTE, 15);
+
             secondHalf = nFormat.format(startCalendar.get(Calendar.HOUR_OF_DAY)) + ":" +
                     nFormat.format(startCalendar.get(Calendar.MINUTE));
             shiftBreaks[0] = firstHalf + " - " + secondHalf;
@@ -167,6 +255,7 @@ public class MainActivity extends AppCompatActivity {
             firstHalf = nFormat.format(startCalendar.get(Calendar.HOUR_OF_DAY)) + ":" +
                     nFormat.format(startCalendar.get(Calendar.MINUTE));
             startCalendar.add(Calendar.HOUR_OF_DAY, 1);
+
             secondHalf = nFormat.format(startCalendar.get(Calendar.HOUR_OF_DAY)) + ":" +
                     nFormat.format(startCalendar.get(Calendar.MINUTE));
             shiftBreaks[1] = firstHalf + " - " + secondHalf;
@@ -175,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
             firstHalf = nFormat.format(startCalendar.get(Calendar.HOUR_OF_DAY)) + ":" +
                     nFormat.format(startCalendar.get(Calendar.MINUTE));
             startCalendar.add(Calendar.MINUTE, 15);
+
             secondHalf = nFormat.format(startCalendar.get(Calendar.HOUR_OF_DAY)) + ":" +
                     nFormat.format(startCalendar.get(Calendar.MINUTE));
             shiftBreaks[2] = firstHalf + " - " + secondHalf;
@@ -190,9 +280,9 @@ public class MainActivity extends AppCompatActivity {
         return shiftBreaks;
     }
 
-    public void logout() {
-        mAuth.getInstance().signOut();
-        Intent intent = new Intent(MainActivity.this, Login.class);
+    public void logOut() {
+        mAuth.signOut();
+        Intent intent = new Intent(MainActivity.this, LogIn.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
@@ -206,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
                     switch (menuItem.getItemId()) {
                         case R.id.navMyShifts:
                             selectedFragment = new MyShiftsFragment();
+                            zeroShifts.setVisibility(View.GONE);
                             break;
                         case R.id.navTodaysSchedule:
                             selectedFragment = new TodaysScheduleFragment();
@@ -229,8 +320,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_feedback:
                 openWebPage("https://goo.gl/forms/qcCEFSJK4ZBKuffx2");
                 return true;
+            // Respond to a click on the "Feedback" menu option
+            case R.id.nav_edit_user_data:
+                Intent intent = new Intent(MainActivity.this, UpdateUserName.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            return true;
+            // Respond to a click on the "Log Out" menu option
             case R.id.nav_logout:
-                logout();
+                logOut();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -242,5 +340,12 @@ public class MainActivity extends AppCompatActivity {
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
+    }
+    public ArrayList<Shift> getTodaysShifts(){
+
+        return mTodaysShifts;
+    }
+    public String getCurrentUser(){
+        return currentUser;
     }
 }
