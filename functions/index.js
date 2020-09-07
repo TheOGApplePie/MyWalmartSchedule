@@ -20,10 +20,10 @@ const file = bucket.file(filePath);
 return file.download({destination: tempFileDest})
 .then(() => {            
     
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
         var schedule = {}
         var csvStream = csv.parseFile(tempFileDest, {'headers': true});
-    csvStream.on('data', function(data){
+    csvStream.on('data', (data) => {
         csvStream.pause();
         var store = data.Store;
         var job = data.Job;
@@ -60,23 +60,26 @@ return file.download({destination: tempFileDest})
         var friF   = new Date (data.FriF);
         schedule[employee].push(friF);
         csvStream.resume();
-    }).on('end', function(){
+    }).on('end', ()=> {
         resolve (schedule);
         console.log("Successfully parsed CSV file.");
-    }).on('error', function(error){
+    }).on('error', (error)=> {
         reject(error);
         console.log(error);
     })
     
-    }).then((schedule) =>{
+    }).then((schedule) => {
+        // Separating Employees from their shifts
         const employees = Object.keys(schedule);
-        const shifts = Object.keys(schedule).map(function(key) {
+        const shifts = Object.keys(schedule).map((key)=> {
             return schedule[key];
         });
         const promises = [];
         var storeNumber;
         var jobTitle;
-        
+        var employeeArray = [];
+
+        // Writing the shifts to the database
         for (var i = 0; i < employees.length; i++){
             for (var j = 2; j < shifts[i].length; j += 2){
                 storeNumber = shifts[i][0];
@@ -87,8 +90,31 @@ return file.download({destination: tempFileDest})
                 });                    
                 promises.push(p);
             }
+            employeeArray.push(employees[i]);
         }
-        return Promise.all(promises);
+        const arrayData = {Associates: employeeArray}
+
+        // Updating the list of associates in the department
+        const associatesListPromise = db.collection(storeNumber).doc(jobTitle).set(arrayData);
+        promises.push(associatesListPromise);
+        db.collection(storeNumber).doc(jobTitle).collection("Tokens").get().then(snapshot => {
+            var regTokens = [];       
+                snapshot.forEach(doc => {
+                    regTokens.push(doc.data());
+                  });              
+                  var payload = {
+                    notification:{
+                        title: "New Schedule Available",
+                        body: "The next week's schedule has been released! Check it out so you can know when you're working next."
+                    }
+                };
+            for(var i = 0; i < regTokens.length; i++){
+            const p = admin.messaging().sendToDevice(regTokens[i].token, payload);
+            promises.push(p);
+            }
+            return Promise.all(promises);
+          }).catch(err=>{console.log(err)});
+          return Promise.all(promises);
     })
     .then(() => {
         console.log("File deleted from Cloud Storage.")
@@ -96,27 +122,3 @@ return file.download({destination: tempFileDest})
     }).catch(err =>{console.log(err)});
 })
 });
-exports.sendNotification = functions.storage.object().onDelete(object =>{
-    db.collection('tokens').get()
-    .then(snapshot => {
-        var regTokens = [];       
-            snapshot.forEach(doc => {
-                regTokens.push(doc.data());
-              });              
-              var payload = {
-                notification:{
-                    title: "New Schedule Available",
-                    body: "The next week's schedule has been released! Check it out so you can know when you're working next."
-                }
-            };
-        const promises = [];
-        for(var i = 0; i < regTokens.length; i++){
-        const p = admin.messaging().sendToDevice(regTokens[i].token, payload);
-        promises.push(p);
-        }
-        console.log("Notifications sent!")
-        return Promise.all(promises);
-      }).catch(err => {
-        console.log(err);
-      })
-    });

@@ -137,23 +137,24 @@ public class MainActivity extends AppCompatActivity{
                             @SuppressWarnings("unchecked")
                             List<String> listOfAssociates = (List<String>)documentSnapshot.get("Associates");
                             if(listOfAssociates!= null && listOfAssociates.size() > 0){
-                                if(listOfAssociates.contains(position)){
-                            for (String i: listOfAssociates){
-                            getShiftsFromFirestore(job,storeNumber, i);}}
-                                else{
+                                if(listOfAssociates.contains(currentUser)){
+                                    for (String i: listOfAssociates){
+                                        getShiftsFromFirestore(job,storeNumber, i);
+                                        }
+                                    }else{
+                                        zeroShifts.setVisibility(View.VISIBLE);
+                                        zeroShifts.setText(R.string.your_not_on_this_schedule);
+                                        fetchingShift.setVisibility(View.GONE);
+                                        progressBar.setVisibility(View.GONE);
+                                        }
+                                }else{
                                     zeroShifts.setVisibility(View.VISIBLE);
-                                    zeroShifts.setText(R.string.your_not_on_this_schedule);
+                                    zeroShifts.setText(R.string.your_store_department);
                                     fetchingShift.setVisibility(View.GONE);
                                     progressBar.setVisibility(View.GONE);
-                                }
-                        }else{
-                                zeroShifts.setVisibility(View.VISIBLE);
-                                zeroShifts.setText(R.string.your_store_department);
-                                fetchingShift.setVisibility(View.GONE);
-                                progressBar.setVisibility(View.GONE);
+                                    }
                             }
-                        }
-                        }
+                    }
                 });
         }catch(Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();

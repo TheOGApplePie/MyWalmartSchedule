@@ -71,7 +71,6 @@ String job, store;
         userNameString = userNameString.substring(0,1).toUpperCase()
                 .concat(userNameString.substring(1,userNameString.length()-1))
                 .concat(userNameString.substring(userNameString.length()-1).toUpperCase());
-        Toast.makeText(this, userNameString, Toast.LENGTH_SHORT).show();
 
         if(store == null || store.equals("")){
             Toast.makeText(this, "You need to select your store number.", Toast.LENGTH_SHORT).show();
